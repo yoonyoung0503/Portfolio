@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>윤희영 포트폴리오</title>
+<style>
+@import "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css";
+:root{
+  color-scheme:dark;
+  --bg:#0A0A0A; --bg-alt:#111111; --bg-card:#161616;
+  --text-primary:#F0F0F0; --text-secondary:#888888;
+  --accent:#39FF14; --border:#222222;
+  --pad:clamp(20px,4vw,56px);
+  --ease:cubic-bezier(.65,0,.35,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;background:var(--bg)}
+body{
+  background:var(--bg);color:var(--text-primary);
+  font-family:"Pretendard Variable","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-size:16px;line-height:1.9;overflow-x:hidden;word-break:keep-all;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+::selection{background:var(--accent);color:#000}
+@media (hover:hover) and (pointer:fine){ body, a, button{cursor:none} }
+
+/* progress */
+.progress{position:fixed;top:0;left:0;height:2px;width:100%;background:var(--accent);
+  transform-origin:0 50%;transform:scaleX(0);z-index:1000}
+
+/* cursor */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:999;border-radius:50%;will-change:transform}
+.cursor-dot{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--accent);transition:background .25s}
+.cursor-ring{width:36px;height:36px;margin:-18px 0 0 -18px;border:1.5px solid rgba(57,255,20,.5);
+  transition:width .3s var(--ease),height .3s var(--ease),margin .3s var(--ease),background .3s,border-color .3s}
+body.is-hover .cursor-ring{width:52px;height:52px;margin:-26px 0 0 -26px;background:var(--accent);border-color:var(--accent)}
+body.is-hover .cursor-dot{background:#000}
+@media (hover:none),(pointer:coarse){.cursor-dot,.cursor-ring{display:none}}
+
+/* common */
+.wrap{padding-inline:var(--pad);max-width:1440px;margin:0 auto}
+section{padding-block:clamp(96px,14vw,180px);border-top:1px solid var(--border)}
+.label{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
+  display:flex;gap:14px;align-items:center}
+.label::after{content:"";height:1px;width:48px;background:var(--accent);opacity:.5}
+.display{font-size:clamp(52px,8.4vw,100px);font-weight:900;line-height:.92;letter-spacing:-.04em;
+  margin:22px 0 clamp(48px,6vw,88px);word-spacing:.08em}
+.display .dim{color:#2a2a2a}
+p.body{color:var(--text-secondary);font-size:16px;line-height:1.9;max-width:62ch}
+p.body b{color:var(--text-primary);font-weight:600}
+
+/* hero */
+.hero{position:relative;height:100vh;min-height:620px;display:flex;flex-direction:column;
+  justify-content:space-between;padding:calc(var(--pad) + 8px) var(--pad);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;opacity:.03;pointer-events:none;
+  background:
+   repeating-linear-gradient(90deg,#fff 0 1px,transparent 1px 120px),
+   repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 120px)}
+.hero-top,.hero-bottom{position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.hero-top{align-items:flex-start}
+.job{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);line-height:1.7}
+.job small{display:block;color:var(--text-secondary);font-weight:500;letter-spacing:.1em}
+.year{font-size:12px;font-weight:700;letter-spacing:.2em;color:var(--text-secondary)}
+.hero-name{position:relative;font-weight:900;font-size:clamp(64px,10.4vw,140px);line-height:.88;
+  letter-spacing:-.05em;text-transform:uppercase}
+.hero-name .line{display:block;overflow:hidden;padding-bottom:.04em}
+.hero-name .line span{display:inline-block}
+.hero-name .line:nth-child(2){padding-left:12vw}
+.hero-name .line:nth-child(3) span{color:var(--accent)}
+.hero-name .kr{position:absolute;right:0;bottom:.3em;font-size:14px;font-weight:600;letter-spacing:.3em;
+  color:var(--text-secondary);text-transform:none}
+.bio{max-width:440px;color:var(--text-secondary);font-size:15px;line-height:1.75}
+.bio b{color:var(--text-primary);font-weight:600}
+.scroll{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--text-primary);
+  display:flex;gap:10px;align-items:center;white-space:nowrap}
+.scroll i{font-style:normal;display:inline-block;animation:bob 1.8s ease-in-out infinite;color:var(--accent)}
+@keyframes bob{50%{transform:translateY(6px)}}
+
+/* marquee */
+.marquee{background:var(--accent);color:#000;overflow:hidden;white-space:nowrap;padding:18px 0;
+  font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:clamp(16px,1.8vw,22px)}
+.marquee-track{display:inline-flex;animation:marquee 28s linear infinite}
+.marquee-track span{padding:0 22px}
+.marquee-track .sep{padding:0}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* about */
+.about-grid{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,6vw,96px);align-items:start}
+.about-left{position:sticky;top:100px}
+blockquote{font-size:clamp(24px,2.6vw,34px);font-weight:800;line-height:1.38;letter-spacing:-.03em;color:var(--text-primary)}
+blockquote em{font-style:normal;color:var(--accent)}
+blockquote::before{content:"“";display:block;color:var(--accent);font-size:80px;line-height:.6;margin-bottom:18px;font-weight:900}
+.about-meta{margin-top:36px;display:grid;gap:10px;font-size:13px;color:var(--text-secondary)}
+.about-meta div{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid var(--border);padding-bottom:10px}
+.about-meta b{color:var(--text-primary);font-weight:600;text-align:right}
+.about-right{display:grid;gap:20px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+.card{background:var(--bg-card);border:1px solid var(--border);padding:30px 28px;border-radius:4px;
+  transition:border-color .35s,transform .35s var(--ease)}
+.card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.card .no{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--accent)}
+.card h3{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:14px 0 10px;line-height:1.3}
+.card p{font-size:14px;color:var(--text-secondary);line-height:1.8}
+.card p b{color:var(--text-primary);font-weight:700}
+
+/* works */
+#works{background:var(--bg-alt)}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);margin-bottom:72px}
+.kpi-item{padding:36px 28px;border-right:1px solid var(--border)}
+.kpi-item:last-child{border-right:none}
+.kpi-num{font-size:clamp(44px,5vw,72px);font-weight:900;letter-spacing:-.05em;line-height:1;color:var(--accent);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.kpi-num small{font-size:.45em;letter-spacing:-.02em;margin-left:2px}
+.kpi-lbl{margin-top:14px;font-size:13px;color:var(--text-secondary);line-height:1.6}
+.kpi-lbl b{display:block;color:var(--text-primary);font-weight:700;font-size:14px}
+
+.fit{margin-bottom:88px}
+.fit-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.fit-head h3{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.fit-head span{font-size:12px;color:var(--text-secondary);letter-spacing:.06em}
+.fit-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);border-left:1px solid var(--border)}
+.fit-cell{padding:24px 22px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);display:grid;gap:10px;align-content:start}
+.fit-duty{font-size:15px;font-weight:800;letter-spacing:-.01em;color:var(--text-primary);line-height:1.4}
+.fit-duty::before{content:"→ ";color:var(--accent)}
+.fit-proof{font-size:13.5px;color:var(--text-secondary);line-height:1.7}
+
+.works-list{border-top:1px solid var(--border)}
+.work{position:relative;display:grid;grid-template-columns:56px 1.25fr 1.5fr 200px;gap:28px;align-items:center;
+  padding:34px var(--pad);margin:0 calc(var(--pad) * -1);border-bottom:1px solid var(--border);overflow:hidden;isolation:isolate}
+.work::before{content:"";position:absolute;inset:0;background:var(--accent);transform:scaleX(0);
+  transform-origin:left center;transition:transform .45s var(--ease);z-index:-1}
+.work:hover::before{transform:scaleX(1)}
+.work *{transition:color .3s,border-color .3s}
+.work:hover, .work:hover *{color:#000 !important;border-color:#000 !important}
+.w-no{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--text-secondary)}
+.w-title{font-size:clamp(20px,2.1vw,27px);font-weight:800;letter-spacing:-.03em;line-height:1.25}
+.w-title small{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--text-secondary);margin-top:8px}
+.w-desc{font-size:14px;color:var(--text-secondary);line-height:1.75}
+.w-desc .duty{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.w-result{text-align:right;font-weight:800;font-size:15px;color:var(--accent);line-height:1.4}
+.w-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px}
+.w-tags span{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:1px solid #333;
+  padding:3px 8px;border-radius:99px;color:var(--text-secondary)}
+
+/* experience */
+.tl-head{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text-secondary);margin:0 0 8px}
+.tl-head.second{margin-top:96px}
+.tl{border-top:1px solid var(--border)}
+.tl-row{display:grid;grid-template-columns:200px 1fr 1.3fr;gap:36px;padding:36px 0;border-bottom:1px solid var(--border)}
+.tl-date{font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--accent);font-variant-numeric:tabular-nums}
+.tl-role{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.3}
+.tl-role span{display:block;font-size:14px;font-weight:500;color:var(--text-secondary);margin-top:6px;letter-spacing:0}
+.tl-row ul{list-style:none;display:grid;gap:8px}
+.tl-row li{position:relative;padding-left:18px;font-size:14.5px;color:var(--text-secondary);line-height:1.75}
+.tl-row li::before{content:"";position:absolute;left:0;top:.8em;width:6px;height:1px;background:var(--accent)}
+.tl-row li b{color:var(--text-primary);font-weight:600}
+
+/* thanks */
+#contact{padding-bottom:64px}
+.thanks{font-size:clamp(52px,10vw,150px);font-weight:900;line-height:1.02;letter-spacing:-.05em;margin:28px 0 64px}
+.thanks span{display:block}
+.thanks span:last-child{color:var(--accent);padding-left:8vw}
+.contact-row{display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap}
+.cta-group{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.magnetic{display:inline-flex;align-items:center;gap:16px;padding:26px 40px;border:1.5px solid var(--accent);
+  border-radius:999px;font-size:clamp(16px,1.8vw,22px);font-weight:800;letter-spacing:-.01em;color:var(--accent);
+  transition:background .3s,color .3s;will-change:transform;user-select:all;-webkit-user-select:all}
+.magnetic:hover{background:var(--accent);color:#000}
+.magnetic .ic{display:inline-block;font-size:.8em;transition:transform .3s var(--ease)}
+.copy-note{font-size:12px;color:var(--text-secondary);letter-spacing:.04em;min-height:1.4em}
+footer{margin-top:120px;padding-top:28px;border-top:1px solid var(--border);display:flex;justify-content:space-between;
+  font-size:12px;color:var(--text-secondary);letter-spacing:.06em;gap:16px;flex-wrap:wrap}
+
+/* responsive */
+@media (max-width:1024px){ .fit-grid{grid-template-columns:1fr 1fr} }
+@media (max-width:768px){
+  .hero-name .line:nth-child(2){padding-left:6vw}
+  .hero-name .kr{position:static;display:block;margin-top:18px;font-size:12px}
+  .hero-bottom{flex-direction:column;align-items:flex-start}
+  .about-grid{grid-template-columns:1fr}
+  .about-left{position:static}
+  .cards{grid-template-columns:1fr}
+  .kpi{grid-template-columns:1fr 1fr}
+  .kpi-item:nth-child(2){border-right:none}
+  .kpi-item:nth-child(-n+2){border-bottom:1px solid var(--border)}
+  .fit-grid{grid-template-columns:1fr}
+  .work{grid-template-columns:1fr;gap:12px;padding:28px var(--pad)}
+  .w-result{text-align:left}
+  .w-tags{justify-content:flex-start}
+  .tl-row{grid-template-columns:1fr;gap:12px}
+  .thanks span:last-child{padding-left:0}
+  .cta-group{align-items:stretch;width:100%}
+  .magnetic{justify-content:center;padding:22px 24px}
+}
+@media (prefers-reduced-motion:reduce){
+  .marquee-track,.scroll i{animation:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="cursor-ring" id="ring"></div>
+<div class="cursor-dot" id="dot"></div>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <div class="hero-top">
+    <div class="job" id="job">Sales Planning · Data Analyst<small>영업기획 / 데이터 가공·분석</small></div>
+    <div class="year">2026</div>
+  </div>
+
+  <h1 class="hero-name" aria-label="Yun Hee Young">
+    <span class="line"><span>Yun</span></span>
+    <span class="line"><span>Hee</span></span>
+    <span class="line"><span>Young.</span></span>
+    <span class="kr">윤희영</span>
+  </h1>
+
+  <div class="hero-bottom">
+    <p class="bio"><b>매출·재고·고객 데이터에서 원인을 찾아 영업의 기준을 바꾸는 사람.</b><br>12개 매장 중 9위였던 매장 매출을 2위로 올렸고, 지금은 그 경험을 Excel·SQL·Python으로 더 빠르고 정확하게 합니다.</p>
+    <a href="#about" class="scroll hoverable">Scroll <i>↓</i></a>
+  </div>
+</header>
+
+<!-- ================= MARQUEE ================= -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Sales Planning</span><span class="sep">✦</span><span>Excel</span><span class="sep">✦</span><span>KPI Design</span><span class="sep">✦</span><span>Profitability Analysis</span><span class="sep">✦</span><span>Market &amp; Competitor Research</span><span class="sep">✦</span><span>SQL · Python</span><span class="sep">✦</span><span>Executive Reporting</span><span class="sep">✦</span><span>VOC · CRM Data</span><span class="sep">✦</span>
+    <span>Sales Planning</span><span class="sep">✦</span><span>Excel</span><span class="sep">✦</span><span>KPI Design</span><span class="sep">✦</span><span>Profitability Analysis</span><span class="sep">✦</span><span>Market &amp; Competitor Research</span><span class="sep">✦</span><span>SQL · Python</span><span class="sep">✦</span><span>Executive Reporting</span><span class="sep">✦</span><span>VOC · CRM Data</span><span class="sep">✦</span>
+  </div>
+</div>
+
+<main>
+<!-- ================= 01 ABOUT ================= -->
+<section id="about">
+  <div class="wrap">
+    <div class="label">01 — About</div>
+    <h2 class="display reveal-h">ABOUT<span class="dim">.</span></h2>
+
+    <div class="about-grid">
+      <div class="about-left">
+        <blockquote class="reveal-p">매출 순위 <em>9위 → 2위.</em><br>숫자에서 원인을 찾고,<br>운영 기준을 바꿔 만든 결과입니다.</blockquote>
+        <div class="about-meta reveal-p">
+          <div><span>Education</span><b>인하대학교 산업경영공학과</b></div>
+          <div><span>GPA</span><b>3.71 / 4.50 (전공 3.85)</b></div>
+          <div><span>Recent</span><b>한국주택금융공사 AI전략실 인턴</b></div>
+          <div><span>OA</span><b>Excel · PowerPoint · 한글</b></div>
+          <div><span>Certs</span><b>SQLD · ADsP · 6σ GB</b></div>
+        </div>
+      </div>
+
+      <div class="about-right">
+        <p class="body reveal-p"><b>영업기획은 목표를 세우고, 진도를 숫자로 확인하고, 벌어진 차이의 원인을 찾아 다음 전략에 반영하는 일이라고 생각합니다.</b> 저는 이 과정을 매장 현장과 데이터 실무 양쪽에서 해봤습니다.</p>
+        <p class="body reveal-p">프랜차이즈 매장 매니저로 일하며 고객 VOC와 판매·재고 데이터를 직접 관리해 VOC 점수를 50점대에서 80점대로, 매출을 수원 지역 12개 매장 중 9위에서 2위로 올렸습니다. 이후 리서치 인턴과 한국주택금융공사 AI전략실에서 시장·기업 데이터를 가공하고, 고객·금융 데이터를 교차 검증하고, 외부 전달용 보고서와 주간 보고 자료를 만들었습니다.</p>
+        <p class="body reveal-p">공업회계, 원가와 경제성공학, 금융공학을 이수해 매출과 손익 구조를 읽는 기본기를 갖췄고, Excel·SQL·Python으로 데이터를 직접 뽑고 검증합니다.</p>
+
+        <div class="cards">
+          <article class="card">
+            <div class="no">매출목표 · 진도관리</div>
+            <h3>목표 대비 실적의 주간 관리</h3>
+            <p>매장 매출 <b>9위 → 2위</b>. 매주 판매 데이터로 발주 순위를 조정하고, 리서치 인턴 때는 연구 진도를 주간 Excel·PPT 보고로 팔로업했습니다.</p>
+          </article>
+          <article class="card">
+            <div class="no">수익성 분석</div>
+            <h3>매출과 수익 구조에 대한 이해</h3>
+            <p>매출은 늘었는데 MRR이 줄어든 원인을 가격정책 구간·플랜별로 쪼개 <b>장기 플랜 중심의 판매구조 변화</b>였음을 밝혀냈습니다.</p>
+          </article>
+          <article class="card">
+            <div class="no">시장 · 경쟁사 조사</div>
+            <h3>소비 트렌드와 경쟁 브랜드 분석</h3>
+            <p>디저트 브랜드 개발 프로젝트에서 디저트 소비 트렌드와 <b>경쟁 브랜드 4곳</b>을 비교해 차별화 요소를 정리했습니다.</p>
+          </article>
+          <article class="card">
+            <div class="no">보고 · 회의체</div>
+            <h3>실무용 보고자료 작성</h3>
+            <p>외부업체 전달용 <b>AX 최종 보고서</b>를 작성했고, 회의록에서 결정사항·후속업무를 자동 추출하는 앱을 만들어 회의 후속 관리를 줄였습니다.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 WORKS ================= -->
+<section id="works">
+  <div class="wrap">
+    <div class="label">02 — Selected Works</div>
+    <h2 class="display reveal-h">WORKS<span class="dim">.</span></h2>
+
+    <div class="kpi">
+      <div class="kpi-item">
+        <div class="kpi-num"><span class="count" data-from="9" data-to="2">2</span><small>위</small></div>
+        <div class="kpi-lbl"><b>매장 매출 순위</b>수원 12개 매장 중 9위 → 2위</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-num">+<span class="count" data-to="30">30</span><small>점</small></div>
+        <div class="kpi-lbl"><b>고객 VOC 점수</b>50점 안팎 → 80점대 (약 2개월)</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-num">−<span class="count" data-to="42">42</span>%</div>
+        <div class="kpi-lbl"><b>월 품절 횟수</b>60회 → 35회, 재고는 30% 감소</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-num">−<span class="count" data-to="81">81</span>%</div>
+        <div class="kpi-lbl"><b>데이터 수집 시간</b>16시간 이상 → 3시간 이내</div>
+      </div>
+    </div>
+
+    <div class="fit reveal-p">
+      <div class="fit-head"><h3>영업기획 업무에 대응하는 경험</h3><span>JD × EXPERIENCE</span></div>
+      <div class="fit-grid">
+        <div class="fit-cell"><div class="fit-duty">매출목표 · 영업전략 수립, 진도관리</div><div class="fit-proof">판매속도·재고·입고일 기준으로 품목 우선순위를 다시 세우고 매주 실적과 예상치를 비교해 기준 보정</div></div>
+        <div class="fit-cell"><div class="fit-duty">고객 · 채널별 매출과 수익성 분석</div><div class="fit-proof">기간·플랜·고객군별로 매출, MRR, 리텐션을 분해해 수익 구조 변화 규명</div></div>
+        <div class="fit-cell"><div class="fit-duty">시장 · 경쟁사 · 유통 · 제품 조사</div><div class="fit-proof">디저트 소비 트렌드와 경쟁 브랜드 4곳 비교, KOTRA 사업 기업·시장 데이터 가공</div></div>
+        <div class="fit-cell"><div class="fit-duty">CRM · 영업관리 데이터 관리, 지표 수립</div><div class="fit-proof">VOC 반복 불만을 유형별로 정리해 운영 개선, 대량 고객·금융 데이터 교차 검증으로 품질 관리</div></div>
+        <div class="fit-cell"><div class="fit-duty">영업 KPI 설계 · 운영</div><div class="fit-proof">재고와 품절을 함께 보는 발주 지표, 방문→가입→구독 퍼널의 전환율·리텐션 지표 설계</div></div>
+        <div class="fit-cell"><div class="fit-duty">회의체 운영 · 경영진 보고자료</div><div class="fit-proof">외부 전달용 AX 보고서, 주간 Excel·PPT 보고, 결정사항·후속업무 추출 회의록 자동화</div></div>
+      </div>
+    </div>
+
+    <div class="works-list">
+      <div class="work hoverable">
+        <div class="w-no">01</div>
+        <div class="w-title">VOC 분석으로 매장 매출 9위 → 2위<small>프랜차이즈 매장 매니저</small></div>
+        <div class="w-desc"><span class="duty">매출 · 고객 데이터</span>VOC를 하나씩 읽어 피크타임 지연·청결·응대 불만을 유형화하고, 시간대별 업무 흐름을 분석해 인력 배치·동선·청소 기준을 바꿨습니다.</div>
+        <div><div class="w-result">VOC 50 → 80점대<br>매출 12개 중 2위</div><div class="w-tags"><span>VOC</span><span>Operations</span></div></div>
+      </div>
+      <div class="work hoverable">
+        <div class="w-no">02</div>
+        <div class="w-title">판매·재고 데이터 기반 발주 기준<small>프랜차이즈 매장 매니저</small></div>
+        <div class="w-desc"><span class="duty">진도관리 · KPI</span>품목별 일별 판매량·재고·입고일·폐기량을 한 시트로 정리. 현재 재고가 다음 입고일까지 버티는지를 기준으로 우선순위를 정하고 매주 실적과 비교해 보정했습니다.</div>
+        <div><div class="w-result">재고 −30%<br>품절 60 → 35회</div><div class="w-tags"><span>Excel</span><span>Inventory</span></div></div>
+      </div>
+      <div class="work hoverable">
+        <div class="w-no">03</div>
+        <div class="w-title">가격 변경의 수익성 영향 분석<small>코드잇 데이터분석 부트캠프 · 2025</small></div>
+        <div class="w-desc"><span class="duty">수익성 분석</span>방문→가입→수강→구독 퍼널을 구성하고, 매출↑·MRR↓ 괴리를 가격정책 전·중·후로 분해. 12개월 플랜 비중 증가와 5개월차까지 높은 리텐션을 확인했습니다.</div>
+        <div><div class="w-result">매출–MRR 괴리<br>원인 규명</div><div class="w-tags"><span>Python</span><span>SQL</span><span>BI</span></div></div>
+      </div>
+      <div class="work hoverable">
+        <div class="w-no">04</div>
+        <div class="w-title">신규 디저트 브랜드 시장·경쟁 분석<small>크리에이티브애드창 협업 · 2024</small></div>
+        <div class="w-desc"><span class="duty">시장 · 경쟁사 조사</span>전통간식·헬스&amp;웰니스·로코노미 트렌드를 분석하고 경쟁 브랜드 4곳을 비교해 차별화 요소를 정리. 분석 결과를 브랜드와 굿즈 기획에 반영했습니다.</div>
+        <div><div class="w-result">경쟁 브랜드 4곳<br>비교 분석</div><div class="w-tags"><span>Market</span><span>Brand</span></div></div>
+      </div>
+      <div class="work hoverable">
+        <div class="w-no">05</div>
+        <div class="w-title">부서 AX 보고서 고도화<small>한국주택금융공사 AI전략실 · 2026</small></div>
+        <div class="w-desc"><span class="duty">보고자료 작성</span>금융위·기재부 정책자료, 인공지능기본법, 금융 AI 가이드라인과 국내외 사례를 조사해 업무별 AI 활용 영역과 검토사항을 정리한 외부업체 전달용 최종 보고서를 작성했습니다.</div>
+        <div><div class="w-result">외부 전달용<br>최종 보고서</div><div class="w-tags"><span>Report</span><span>PPT</span></div></div>
+      </div>
+      <div class="work hoverable">
+        <div class="w-no">06</div>
+        <div class="w-title">주택연금 데이터 추출·시각화 플랫폼<small>한국주택금융공사 AI전략실 · 2026</small></div>
+        <div class="w-desc"><span class="duty">영업관리 데이터 · 지표</span>요구사항에 맞춰 JOIN·WHERE·날짜 조건을 구성하고 내부 기준과 대조해 검증. 추출 데이터를 Streamlit 조회·시각화 화면으로 만들었습니다.</div>
+        <div><div class="w-result">SQL 과제 12개<br>대시보드 구축</div><div class="w-tags"><span>SQL</span><span>Streamlit</span></div></div>
+      </div>
+      <div class="work hoverable">
+        <div class="w-no">07</div>
+        <div class="w-title">시장·기업 데이터 수집 자동화<small>코데이터솔루션 · KOTRA 수출바우처 · 2025</small></div>
+        <div class="w-desc"><span class="duty">데이터 가공</span>수집 항목과 입력 기준을 표준화한 뒤 Python으로 기업·지원사업 정보를 자동 수집. Excel로 정리해 누락·중복·오류를 검수했습니다.</div>
+        <div><div class="w-result">16h+ → 3h 이내</div><div class="w-tags"><span>Python</span><span>Excel</span></div></div>
+      </div>
+      <div class="work hoverable">
+        <div class="w-no">08</div>
+        <div class="w-title">회의록·주간 동향 보고 자동화<small>한국주택금융공사 AI전략실 · 2026</small></div>
+        <div class="w-desc"><span class="duty">회의체 운영</span>회의 내용·참석자·결정사항·후속업무를 자동 정리하는 앱을 만들고, 뉴스레터 수집·요약 보고는 원문 대조 2차 검증을 넣어 운영했습니다.</div>
+        <div><div class="w-result">매주 회의·보고<br>후속업무 자동 추출</div><div class="w-tags"><span>AI Studio</span><span>Claude</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 EXPERIENCE ================= -->
+<section id="experience">
+  <div class="wrap">
+    <div class="label">03 — Experience</div>
+    <h2 class="display reveal-h">EXPERIENCE<span class="dim">.</span></h2>
+
+    <div class="tl-head">Work · Project · Activity</div>
+    <div class="tl">
+      <div class="tl-row">
+        <div class="tl-date">2026.02 — 2026.08</div>
+        <div class="tl-role">AI전략실 인턴<span>한국주택금융공사</span></div>
+        <ul>
+          <li>대량 <b>고객·금융 데이터 교차 검증</b>으로 입력 오류 점검, 데이터 품질 관리</li>
+          <li>AI·AX 정책·시장·기술 동향 조사 → <b>외부 전달용 AX 보고서</b> 작성</li>
+          <li>주택연금 SQL 과제 12개 · Streamlit 조회/시각화 플랫폼 구축</li>
+          <li>주간 AI 동향 보고, 회의록 자동화 앱 구축 및 인수인계 문서화</li>
+        </ul>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">2025.06 — 2025.11</div>
+        <div class="tl-role">리서치연구 인턴<span>코데이터솔루션</span></div>
+        <ul>
+          <li>KOTRA 수출바우처 기업·시장 데이터 가공, 서베이 데이터 분석</li>
+          <li>데이터 수집 자동화로 <b>16시간 이상 → 3시간 이내</b></li>
+          <li>연구 진행 현황 <b>주간 Excel·PPT 보고</b> 및 팔로업</li>
+          <li>FGI 섭외 시 거절 사유부터 분석해 기업 대표 참여 확보, 회의록 일부가 중소기업중앙회 정책자료에 반영</li>
+        </ul>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">2025.01 — 2025.05</div>
+        <div class="tl-role">데이터분석 부트캠프<span>코드잇 · 700시간</span></div>
+        <ul>
+          <li>Python·SQL 기반 전처리, EDA, 통계분석, 고객 행동 분석, BI 시각화</li>
+          <li>구독 서비스 퍼널·리텐션·매출/MRR 분석 프로젝트</li>
+        </ul>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">2024.08 — 2024.10</div>
+        <div class="tl-role">브랜드 개발 프로젝트<span>광고대행사 크리에이티브애드창 협업</span></div>
+        <ul>
+          <li>국내 디저트 소비 트렌드 조사, 경쟁 브랜드 4곳 비교</li>
+          <li>외부 협력사와 의견 조율하며 캐릭터 굿즈 제작 참여</li>
+        </ul>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">2024.06 — 2024.12</div>
+        <div class="tl-role">SW·AI 교육봉사<span>CJ올리브네트웍스 · 한국과학창의재단 · 60시간</span></div>
+        <ul>
+          <li>중·고등학생 대상 <b>Excel 함수·피벗테이블·시각화</b>, t-검정 실습 지도</li>
+          <li>상대 수준에 맞춰 설명 방식을 조정하는 커뮤니케이션</li>
+        </ul>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">2024.02 — 2025.10</div>
+        <div class="tl-role">학부연구생<span>소비자 행동 분석 및 예측 연구실</span></div>
+        <ul>
+          <li>게임 IP 수익창출전략: AHP로 <b>12개 전략변수 우선순위</b>, K-means·Wilcoxon으로 집단별 인식 차이 검증</li>
+          <li>소비자 선택 피로도: 가격 교호작용 효용모형, R·STAN 베이지안 추정</li>
+        </ul>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">2023.03 — 2024.02</div>
+        <div class="tl-role">운영진 · 강사<span>교내 빅데이터 동아리</span></div>
+        <ul>
+          <li>익명 설문으로 이탈 원인 파악 → 비전공자 대상 SQLD 커리큘럼 신설</li>
+          <li>강의 참여 인원 <b>11명 → 25명</b></li>
+        </ul>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">2021.02 — 2023.07</div>
+        <div class="tl-role">매장 매니저<span>프랜차이즈 매장 (수원)</span></div>
+        <ul>
+          <li>VOC 분석 기반 운영 개선: VOC <b>50 → 80점대</b>, 매출 <b>12개 매장 중 9위 → 2위</b></li>
+          <li>판매·재고 데이터 기반 발주: 월말 재고 약 30%↓, 품절 60 → 35회</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tl-head second">Education · Awards · Skills</div>
+    <div class="tl">
+      <div class="tl-row">
+        <div class="tl-date">2021.03 — 2026.02</div>
+        <div class="tl-role">인하대학교 산업경영공학과<span>학사 졸업 · GPA 3.71 / 4.50 (전공 3.85)</span></div>
+        <ul>
+          <li>매출·손익: <b>공업회계, 원가와 경제성공학, 금융공학</b>, 생산경제학</li>
+          <li>분석: 공학통계, 확률 및 통계, 통계적공정관리, 파이썬 프로그래밍</li>
+          <li>시장: e비즈니스(A+), 신기술시장분석, 산업정보화(A+)</li>
+        </ul>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">2024.06</div>
+        <div class="tl-role">대학생 ESG위원회 팀우수상<span>대한상공회의소 · 팀장</span></div>
+        <ul>
+          <li>주요 기업 ESG 보고서 분석 및 ESG 신사업 제안</li>
+          <li>청년 인턴십 홍보 전략 기획, 제안한 시나리오가 실제 홍보 영상으로 제작</li>
+        </ul>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">Skills</div>
+        <div class="tl-role">OA · 데이터 · 자격<span>한국데이터산업진흥원 외</span></div>
+        <ul>
+          <li><b>Excel</b> · PowerPoint · 한글</li>
+          <li>Python · SQL · R</li>
+          <li>SQLD (2024.06) · ADsP (2023.09) · 6시그마 GB</li>
+          <li>TOEIC Speaking IH (2026.08)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 THANK YOU ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="label">04 — Thank you</div>
+    <h2 class="thanks reveal-h"><span>읽어주셔서</span><span>감사합니다.</span></h2>
+    <div class="contact-row">
+      <p class="body reveal-p">고객·채널별 숫자를 가장 먼저 읽고, 회의에서 바로 쓰이는 보고자료를 만드는 영업기획 담당자가 되겠습니다.</p>
+      <div class="cta-group">
+        <button type="button" class="magnetic hoverable" id="magnetic" data-email="yweo0@naver.com" aria-label="이메일 주소 복사: yweo0@naver.com">yweo0@naver.com <span class="ic">⧉</span></button>
+        <div class="copy-note" id="copyNote" aria-live="polite">클릭하면 이메일 주소가 복사됩니다</div>
+      </div>
+    </div>
+    <footer>
+      <span>© 2026 YUN HEEYOUNG</span>
+      <span>Sales Planning · Data</span>
+      <a href="#top" class="hoverable">Back to top ↑</a>
+    </footer>
+  </div>
+</section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  const hasGSAP = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* scroll progress */
+  const bar = document.getElementById("progress");
+  const onScroll = () => {
+    const h = document.documentElement.scrollHeight - innerHeight;
+    bar.style.transform = "scaleX(" + (h > 0 ? scrollY / h : 0) + ")";
+  };
+  addEventListener("scroll", onScroll, {passive:true}); onScroll();
+
+  /* custom cursor */
+  const fine = matchMedia("(hover:hover) and (pointer:fine)").matches;
+  if (fine){
+    const dot = document.getElementById("dot"), ring = document.getElementById("ring");
+    let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+    addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY;
+      dot.style.transform = "translate(" + mx + "px," + my + "px)"; });
+    (function loop(){
+      rx += (mx - rx) * 0.08; ry += (my - ry) * 0.08;
+      ring.style.transform = "translate(" + rx + "px," + ry + "px)";
+      requestAnimationFrame(loop);
+    })();
+    document.querySelectorAll("a, button, .hoverable, .card, .fit-cell").forEach(el => {
+      el.addEventListener("mouseenter", () => document.body.classList.add("is-hover"));
+      el.addEventListener("mouseleave", () => document.body.classList.remove("is-hover"));
+    });
+  }
+
+  /* email copy */
+  const mag = document.getElementById("magnetic");
+  const note = document.getElementById("copyNote");
+  mag.addEventListener("click", () => {
+    const email = mag.dataset.email;
+    const fallback = () => {
+      const r = document.createRange(); r.selectNodeContents(mag.firstChild.parentNode);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      note.textContent = "주소를 선택했습니다. Ctrl/⌘ + C로 복사하세요";
+    };
+    try {
+      navigator.clipboard.writeText(email).then(() => { note.textContent = "복사했습니다: " + email; }, fallback);
+    } catch(e){ fallback(); }
+  });
+
+  /* magnetic (±12px) */
+  if (fine){
+    mag.addEventListener("mousemove", e => {
+      const r = mag.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width - .5) * 24;
+      const y = ((e.clientY - r.top) / r.height - .5) * 24;
+      hasGSAP ? gsap.to(mag, {x, y, duration:.4, ease:"power3.out"}) : (mag.style.transform = "translate(" + x + "px," + y + "px)");
+    });
+    mag.addEventListener("mouseleave", () => {
+      hasGSAP ? gsap.to(mag, {x:0, y:0, duration:.7, ease:"elastic.out(1,0.4)"}) : (mag.style.transform = "");
+    });
+  }
+
+  /* count-up (from → to) */
+  const countUp = (el) => {
+    const to = parseFloat(el.dataset.to), from = parseFloat(el.dataset.from || "0"), dec = parseInt(el.dataset.dec || "0", 10);
+    if (!hasGSAP || reduce){ el.textContent = to.toFixed(dec); return; }
+    const o = {v:from};
+    el.textContent = from.toFixed(dec);
+    gsap.to(o, {v:to, duration:2, ease:"power2.out", onUpdate:() => el.textContent = o.v.toFixed(dec)});
+  };
+
+  if (!hasGSAP || reduce) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* page load */
+  gsap.fromTo(".hero-name .line",
+    {clipPath:"inset(0 0 100% 0)", y:40},
+    {clipPath:"inset(0 0 0% 0)", y:0, duration:1.2, stagger:.18, ease:"power4.out", delay:.1});
+  gsap.from("#job", {y:20, opacity:0, duration:.9, delay:.5, ease:"power3.out"});
+  gsap.from(".year, .bio, .scroll, .hero-name .kr", {opacity:0, y:12, duration:.9, delay:.9, stagger:.08, ease:"power3.out"});
+
+  const st = {start:"top 85%"};
+  gsap.utils.toArray(".reveal-h").forEach(el => {
+    gsap.from(el, {y:60, opacity:0, duration:1.0, ease:"power3.out", scrollTrigger:{trigger:el, ...st}});
+  });
+  gsap.utils.toArray(".reveal-p").forEach(el => {
+    gsap.from(el, {y:30, opacity:0, duration:.8, ease:"power3.out", scrollTrigger:{trigger:el, ...st}});
+  });
+  gsap.from(".card", {y:30, opacity:0, duration:.8, stagger:.1, ease:"power3.out", scrollTrigger:{trigger:".cards", ...st}});
+  gsap.from(".work", {x:-20, opacity:0, duration:.7, stagger:.07, ease:"power3.out", scrollTrigger:{trigger:".works-list", ...st}});
+  gsap.from(".kpi-item", {y:20, opacity:0, duration:.7, stagger:.08, ease:"power3.out", scrollTrigger:{trigger:".kpi", ...st}});
+  ScrollTrigger.create({trigger:".kpi", ...st, once:true, onEnter:() => document.querySelectorAll(".count").forEach(countUp)});
+  gsap.utils.toArray(".tl").forEach(tl => {
+    gsap.from(tl.querySelectorAll(".tl-row"), {y:20, opacity:0, duration:.7, stagger:.1, ease:"power3.out", scrollTrigger:{trigger:tl, ...st}});
+  });
+})();
+</script>
+</body>
+</html>
